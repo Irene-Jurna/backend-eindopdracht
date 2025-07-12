@@ -1,7 +1,7 @@
 package org.example.backend.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +14,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class HarvestCrop extends Ingredient {
 
-    @Lob
+    @Column(length = 1000)
     private String about;
 
-    @Lob
+    @Column(length = 500)
     private String harvestMethod;
 
-    @Lob
+    @Column(length = 500)
     private String storageMethod;
 
     public HarvestCrop(String name, String about, String harvestMethod, String storageMethod) {

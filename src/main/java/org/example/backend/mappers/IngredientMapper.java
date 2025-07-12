@@ -2,18 +2,15 @@ package org.example.backend.mappers;
 
 import org.example.backend.dtos.IngredientRequestDto;
 import org.example.backend.dtos.IngredientResponseDto;
+import org.example.backend.enums.IngredientType;
 import org.example.backend.models.HarvestCrop;
 import org.example.backend.models.Ingredient;
 import org.example.backend.models.StoreIngredient;
 
 public class IngredientMapper {
     public static Ingredient toEntity(IngredientRequestDto ingredientRequestDto) {
-        if (ingredientRequestDto.getType() == null) {
-            throw new IllegalArgumentException("Type klopt niet, kies voor 'harvest' als het een oogstgewas is, of 'store' voor andere producten");
-        }
-
-        switch (ingredientRequestDto.getType().toLowerCase()) {
-            case "harvest":
+        switch (ingredientRequestDto.getType()) {
+            case HARVEST:
                 HarvestCrop crop = new HarvestCrop();
                 crop.setName(ingredientRequestDto.getName());
                 crop.setAbout(ingredientRequestDto.getAbout());
@@ -21,7 +18,7 @@ public class IngredientMapper {
                 crop.setStorageMethod(ingredientRequestDto.getStorageMethod());
                 return crop;
 
-            case "store":
+            case STORE:
                 StoreIngredient ingredient = new StoreIngredient();
                 ingredient.setName(ingredientRequestDto.getName());
                 return ingredient;
@@ -37,12 +34,12 @@ public class IngredientMapper {
         ingredientResponseDto.setName(ingredient.getName());
 
         if  (ingredient instanceof HarvestCrop crop) {
-            ingredientResponseDto.setType("harvest");
+            ingredientResponseDto.setType(IngredientType.HARVEST);
             ingredientResponseDto.setAbout(crop.getAbout());
             ingredientResponseDto.setHarvestMethod(crop.getHarvestMethod());
             ingredientResponseDto.setStorageMethod(crop.getStorageMethod());
         } else if (ingredient instanceof StoreIngredient) {
-            ingredientResponseDto.setType("store");
+            ingredientResponseDto.setType(IngredientType.STORE);
         }
         return ingredientResponseDto;
     }

@@ -3,6 +3,7 @@ package org.example.backend.controllers;
 import jakarta.validation.Valid;
 import org.example.backend.dtos.IngredientRequestDto;
 import org.example.backend.dtos.IngredientResponseDto;
+import org.example.backend.enums.IngredientType;
 import org.example.backend.mappers.IngredientMapper;
 import org.example.backend.models.Ingredient;
 import org.example.backend.services.IngredientService;
@@ -28,7 +29,7 @@ public class IngredientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<IngredientResponseDto>> getAllIngredients() {
-        return ResponseEntity.ok(ingredientService.getAllIngredients());
+    public ResponseEntity<List<IngredientResponseDto>> getAllIngredients(@RequestParam(required=false) IngredientType type) {
+        return ResponseEntity.ok(ingredientService.getAllIngredients(type));
     }
 }
