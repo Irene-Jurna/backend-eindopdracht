@@ -1,6 +1,8 @@
 package org.example.backend.services;
 
-import org.example.backend.models.HarvestCrop;
+import org.example.backend.dtos.IngredientRequestDto;
+import org.example.backend.dtos.IngredientResponseDto;
+import org.example.backend.mappers.IngredientMapper;
 import org.example.backend.models.Ingredient;
 import org.example.backend.repositories.IngredientRepository;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,12 @@ public class IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public HarvestCrop saveHarvestCrop(HarvestCrop crop) {
-        return ingredientRepository.save(crop);
+    public Ingredient saveIngredient(IngredientRequestDto ingredientRequestDto) {
+        Ingredient ingredient = IngredientMapper.toEntity(ingredientRequestDto);
+        return ingredientRepository.save(ingredient);
     }
 
-    public List<Ingredient> getAllIngredients() {
-        return ingredientRepository.findAll();
+    public List<IngredientResponseDto> getAllIngredients() {
+        return ingredientRepository.findAll().stream().map(IngredientMapper::toDto).toList();
     }
 }

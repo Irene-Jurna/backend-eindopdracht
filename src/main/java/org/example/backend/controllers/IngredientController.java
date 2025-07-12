@@ -1,6 +1,9 @@
 package org.example.backend.controllers;
 
-import org.example.backend.models.HarvestCrop;
+import jakarta.validation.Valid;
+import org.example.backend.dtos.IngredientRequestDto;
+import org.example.backend.dtos.IngredientResponseDto;
+import org.example.backend.mappers.IngredientMapper;
 import org.example.backend.models.Ingredient;
 import org.example.backend.services.IngredientService;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +20,15 @@ public class IngredientController {
         this.ingredientService = ingredientService;
     }
 
-    @PostMapping("/harvest-crop")
-    public ResponseEntity<HarvestCrop> createHarvestCrop(@RequestBody HarvestCrop crop) {
-        HarvestCrop savedCrop = ingredientService.saveHarvestCrop(crop);
-        return ResponseEntity.ok(savedCrop);
+    @PostMapping()
+    public ResponseEntity<IngredientResponseDto> createIngredient(@RequestBody @Valid IngredientRequestDto ingredientRequestDto) {
+        Ingredient savedIngredient = ingredientService.saveIngredient(ingredientRequestDto);
+        IngredientResponseDto ingredientResponseDto = IngredientMapper.toDto(savedIngredient);
+        return ResponseEntity.ok(ingredientResponseDto);
     }
 
     @GetMapping
-    public ResponseEntity<List<Ingredient>> getAllIngredients() {
+    public ResponseEntity<List<IngredientResponseDto>> getAllIngredients() {
         return ResponseEntity.ok(ingredientService.getAllIngredients());
     }
 }
