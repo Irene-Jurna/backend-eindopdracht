@@ -3,6 +3,7 @@ package org.example.backend.services;
 import org.example.backend.dtos.IngredientRequestDto;
 import org.example.backend.dtos.IngredientResponseDto;
 import org.example.backend.enums.IngredientType;
+import org.example.backend.exceptions.DuplicateIngredientNameException;
 import org.example.backend.mappers.IngredientMapper;
 import org.example.backend.models.HarvestCrop;
 import org.example.backend.models.Ingredient;
@@ -22,8 +23,8 @@ public class IngredientService {
     }
 
     public Ingredient saveIngredient(IngredientRequestDto ingredientRequestDto) {
-        if (ingredientRequestDto.getType() == null) {
-            throw new IllegalArgumentException("Type is verplicht. Kies 'harvest' voor oogstingredienten en 'store' voor alle overige ingredienten.");
+        if (ingredientRepository.existsByName(ingredientRequestDto.getName())) {
+            throw new DuplicateIngredientNameException("Er bestaat al een ingredient met de naam: " + ingredientRequestDto.getName() + ". Kies een andere naam of gebruik het bestaande ingredient.");
         }
         Ingredient ingredient = IngredientMapper.toEntity(ingredientRequestDto);
         return ingredientRepository.save(ingredient);
@@ -31,6 +32,7 @@ public class IngredientService {
 
     public List<IngredientResponseDto> getAllIngredients(IngredientType type) {
         List<Ingredient> ingredients = ingredientRepository.findAll();
+
         if (type != null) {
             ingredients = ingredients.stream()
                     .filter(i -> (type == IngredientType.HARVEST && i instanceof HarvestCrop)
@@ -38,6 +40,7 @@ public class IngredientService {
                     .toList();
 
         }
+
         return ingredients.stream().map(IngredientMapper::toDto).toList();
     }
 }
