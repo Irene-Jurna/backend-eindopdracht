@@ -21,6 +21,7 @@ public class IngredientMapper {
             case STORE:
                 StoreIngredient ingredient = new StoreIngredient();
                 ingredient.setName(ingredientRequestDto.getName());
+                ingredient.setPointOfSale(ingredientRequestDto.getPointOfSale());
                 return ingredient;
 
             default:
@@ -38,8 +39,9 @@ public class IngredientMapper {
             ingredientResponseDto.setAbout(crop.getAbout());
             ingredientResponseDto.setHarvestMethod(crop.getHarvestMethod());
             ingredientResponseDto.setStorageMethod(crop.getStorageMethod());
-        } else if (ingredient instanceof StoreIngredient) {
+        } else if (ingredient instanceof StoreIngredient store) {
             ingredientResponseDto.setType(IngredientType.STORE);
+            ingredientResponseDto.setPointOfSale(store.getPointOfSale());
         }
         return ingredientResponseDto;
     }

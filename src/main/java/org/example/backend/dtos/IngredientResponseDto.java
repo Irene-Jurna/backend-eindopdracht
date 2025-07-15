@@ -15,6 +15,9 @@ public class IngredientResponseDto {
     private IngredientType type;
     private String name;
 
+    // Alleen voor StoreIngredient
+    private String pointOfSale;
+
     // Alleen voor HarvestCrop
     private String about;
     private String harvestMethod;

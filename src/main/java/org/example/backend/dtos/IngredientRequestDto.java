@@ -16,6 +16,10 @@ public class IngredientRequestDto {
     @Size(min = 2, max = 50, message = "Naam moet minimaal 2 en maximaal 50 tekens zijn.")
     private String name;
 
+    // Alleen voor StoreIngredient
+    @Size(max = 100, message = "te lang. De tekstinvoer mag maximaal 100 tekens bevatten.")
+    private String pointOfSale;
+
     // Alleen voor HarvestCrop
     @Size(max = 1000, message = "te lang. De tekstinvoer mag maximaal 1000 tekens bevatten.")
     private String about;
