@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name= "ingredients")
+@Table(name = "ingredients")
 @Getter
 @Setter
 @NoArgsConstructor
