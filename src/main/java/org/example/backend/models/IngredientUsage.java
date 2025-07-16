@@ -21,4 +21,7 @@ public class IngredientUsage extends BaseModel {
 
     private BigDecimal quantity;
     private String unit;
+
+    @ManyToOne
+    private Recipe recipe;
 }

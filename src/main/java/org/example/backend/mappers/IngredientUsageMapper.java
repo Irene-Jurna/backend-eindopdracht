@@ -1,6 +1,5 @@
 package org.example.backend.mappers;
 
-import org.example.backend.dtos.IngredientResponseDto;
 import org.example.backend.dtos.IngredientUsageRequestDto;
 import org.example.backend.dtos.IngredientUsageResponseDto;
 import org.example.backend.models.Ingredient;
