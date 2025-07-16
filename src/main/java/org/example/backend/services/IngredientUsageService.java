@@ -21,7 +21,7 @@ public class IngredientUsageService {
     }
 
     private IngredientUsage findIngredientUsageOrThrow(Long id, String action) {
-        return ingredientUsageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cannot" + action + " ingredient usage because id " + id + " does not exist"));
+        return ingredientUsageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cannot " + action + " ingredient usage because id " + id + " does not exist"));
     }
 
     public IngredientUsage saveIngredientUsage(IngredientUsageRequestDto dto) {
@@ -35,9 +35,21 @@ public class IngredientUsageService {
     }
 
     public IngredientUsage updateIngredientUsageById(Long id, IngredientUsageRequestDto dto) {
-        Ingredient ingredient = ingredientRepository.findById(dto.getIngredientId()).orElseThrow(() -> new ResourceNotFoundException("Ingredient id niet gevonden"));
         IngredientUsage ingredientUsage = findIngredientUsageOrThrow(id, "update");
-        ingredientUsage = IngredientUsageMapper.toEntity(dto, ingredient);
+
+        if (dto.getIngredientId() != null) {
+            Ingredient ingredient = ingredientRepository.findById(dto.getIngredientId()).orElseThrow(() -> new ResourceNotFoundException("Ingredient id niet gevonden"));
+            ingredientUsage.setIngredient(ingredient);
+        }
+
+        if (dto.getQuantity() != null) {
+            ingredientUsage.setQuantity(dto.getQuantity());
+        }
+
+        if (dto.getUnit() != null) {
+            ingredientUsage.setUnit(dto.getUnit());
+        }
+
         return ingredientUsageRepository.save(ingredientUsage);
     }
 

@@ -15,7 +15,7 @@ public class IngredientUsageMapper {
         return usage;
     }
 
-    public static IngredientUsageResponseDto toDto(IngredientUsage usage, IngredientResponseDto ingredient) {
+    public static IngredientUsageResponseDto toDto(IngredientUsage usage) {
         IngredientUsageResponseDto responseDto = new IngredientUsageResponseDto();
         responseDto.setId(usage.getId());
         responseDto.setIngredientName(usage.getIngredient().getName());
