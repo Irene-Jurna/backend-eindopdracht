@@ -35,4 +35,17 @@ public class RecipeController {
     public ResponseEntity<List<RecipeResponseDto>> getAllRecipes() {
         return ResponseEntity.ok(recipeService.getAllRecipes());
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<RecipeResponseDto> updateRecipe(@RequestBody RecipeRequestDto recipeRequestDto, @PathVariable Long id) {
+        Recipe updatedRecipe = recipeService.updateRecipe(id, recipeRequestDto);
+        RecipeResponseDto recipeResponseDto = RecipeMapper.toDto(updatedRecipe);
+        return ResponseEntity.ok(recipeResponseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<RecipeResponseDto> deleteRecipeById(@PathVariable Long id) {
+        recipeService.deleteRecipeById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

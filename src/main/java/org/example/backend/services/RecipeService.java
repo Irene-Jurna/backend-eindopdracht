@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
@@ -57,5 +58,53 @@ public class RecipeService {
     public List<RecipeResponseDto> getAllRecipes() {
         List<Recipe> recipes = recipeRepository.findAll();
         return recipes.stream().map(RecipeMapper::toDto).toList();
+    }
+
+    public Recipe updateRecipe(Long id, RecipeRequestDto dto) {
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recept met id " + id + " niet gevonden."));
+
+        if (dto.getTitle() != null) {
+            recipe.setTitle(dto.getTitle());
+        }
+
+        if (dto.getDescription() != null) {
+            recipe.setDescription(dto.getDescription());
+        }
+
+        if (dto.getHarvestMonth() != null) {
+            recipe.setHarvestMonth(dto.getHarvestMonth());
+        }
+
+        if (dto.getCuisineType() != null) {
+            recipe.setCuisineType(dto.getCuisineType());
+        }
+
+        if (dto.getDishType() != null) {
+            recipe.setDishType(dto.getDishType());
+        }
+
+        if (dto.getIngredients() != null) {
+            List<IngredientUsage> updatedUsages = dto.getIngredients().stream()
+                    .map(usageDto -> {
+                        Ingredient ingredient = ingredientRepository.findById(usageDto.getIngredientId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Ingredient-id niet gevonden"));
+
+                        return IngredientUsageMapper.toEntity(usageDto, ingredient);
+                    }).toList();
+        }
+
+        if (dto.getCookingSteps()  != null) {
+            recipe.setCookingSteps(dto.getCookingSteps());
+        }
+
+        return  recipeRepository.save(recipe);
+    }
+
+    public void deleteRecipeById(Long id) {
+        if (recipeRepository.existsById(id)) {
+            recipeRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("Recept id niet gevonden");
+        }
     }
 }
