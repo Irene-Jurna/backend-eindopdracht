@@ -8,6 +8,8 @@ import org.example.backend.services.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("recipe")
 public class RecipeController {
@@ -27,5 +29,10 @@ public class RecipeController {
     @GetMapping("/{id}")
     public ResponseEntity<RecipeResponseDto> getRecipeById(@PathVariable Long id) {
         return ResponseEntity.ok(RecipeMapper.toDto(recipeService.getRecipeById(id)));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<RecipeResponseDto>> getAllRecipes() {
+        return ResponseEntity.ok(recipeService.getAllRecipes());
     }
 }

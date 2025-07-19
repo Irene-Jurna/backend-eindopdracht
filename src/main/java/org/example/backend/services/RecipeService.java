@@ -2,6 +2,7 @@ package org.example.backend.services;
 
 import org.example.backend.dtos.IngredientUsageRequestDto;
 import org.example.backend.dtos.RecipeRequestDto;
+import org.example.backend.dtos.RecipeResponseDto;
 import org.example.backend.exceptions.ResourceNotFoundException;
 import org.example.backend.mappers.IngredientUsageMapper;
 import org.example.backend.mappers.RecipeMapper;
@@ -51,5 +52,10 @@ public class RecipeService {
 
     public Recipe getRecipeById(Long id) {
         return recipeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recept met id " + id + " niet gevonden."));
+    }
+
+    public List<RecipeResponseDto> getAllRecipes() {
+        List<Recipe> recipes = recipeRepository.findAll();
+        return recipes.stream().map(RecipeMapper::toDto).toList();
     }
 }
