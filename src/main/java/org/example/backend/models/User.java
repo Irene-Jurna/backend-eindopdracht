@@ -1,7 +1,6 @@
 package org.example.backend.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,9 +22,24 @@ public class User extends BaseModel {
     private String email;
     private String password;
     private LocalDateTime lastLogin;
+
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<CuisineType> preferredCuisineTypes;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_bookmarked_recipes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
     private List<Recipe> bookmarkedRecipes;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Enumerated(EnumType.STRING)
     private SubscriptionType subscriptionType;
+
     private Boolean volunteer;
 }
