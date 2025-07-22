@@ -12,8 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 
