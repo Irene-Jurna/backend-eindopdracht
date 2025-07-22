@@ -39,5 +39,9 @@ public class Recipe extends BaseModel {
     @ElementCollection
     private List<String> cookingSteps;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User createdBy;
+
     // TODO: nog toevoegen image, createdBy en approved (afhankelijk van User en Image klasses)
 }

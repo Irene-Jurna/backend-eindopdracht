@@ -74,4 +74,44 @@ VALUES
         false,
         CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP
+    ),
+    -- Wachtwoord: Koolrabi2!
+    (
+        1101,
+        'Boer',
+        'Edo',
+        'edo@pluk.nl',
+        '$2a$12$lMY0.gGvwYvfOHvBbL0JZux9Se8XRV99yj1RIkJ2.xLfgrWfL6Oqy',
+        'FARMER',
+        null,
+        false,
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    -- Wachtwoord: BladMosterd123
+    (
+        1102,
+        'Maud',
+        'Smid',
+        'maudsmid@gmail.com',
+        '$2a$12$DL5xi5MZRUSJ7j/3fQii.efpGDjRt101mCHaY/sBQG0gQksVaA7F2',
+        'HARVESTER',
+        'BIWEEKLY',
+        true,
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    -- Wachtwoord: FavaBonen100
+    (
+        1103,
+        'Pieter',
+        'Post',
+        'pieterpost@gmail.com',
+        '$2a$12$sYIFgt3ihqHlblQOWXf9B.Oph1RVgyGq3ncdHb/fMmFqaBGb5ruqu',
+        'HARVESTER',
+        'WEEKLY',
+        false,
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
     );
+
