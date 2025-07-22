@@ -81,6 +81,11 @@ public class GlobalExceptionHandler {
                 .body("Ongeldige waarde voor parameter '" + ex.getName() + "': '" + ex.getValue() + "'.");
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleAccessDenied(AccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleAllOtherExceptions(Exception e) {
         return new ResponseEntity<>("Er ging iets mis: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

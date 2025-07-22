@@ -42,4 +42,7 @@ public class User extends BaseModel {
     private SubscriptionType subscriptionType;
 
     private Boolean volunteer;
+
+    @OneToMany(mappedBy = "createdBy")
+    private List<Recipe> recipes;
 }

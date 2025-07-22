@@ -46,18 +46,18 @@ public class SecurityConfig {
         return new MyUserDetailsService(userRepository);
     }
 
-    // TODO: endpoints users en profile nog maken of iets mee doen. Zit nu niet in dit project
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll() // registratie
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/ingredients").permitAll()
                         .requestMatchers("/ingredients/**").hasRole("FARMER")
                         .requestMatchers("/ingredient-usage/**").permitAll()
-                        .requestMatchers("/recipe/**").permitAll()
-                        .requestMatchers("/profile/**").authenticated()         // ingelogde gebruikers
+                        .requestMatchers(HttpMethod.POST, "/recipe").hasAnyRole("HARVESTER", "FARMER")
+                        .requestMatchers(HttpMethod.DELETE, "/recipe/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/recipe/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/recipe/**").permitAll()
                         .anyRequest().denyAll()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -4,11 +4,13 @@ import org.example.backend.dtos.IngredientUsageRequestDto;
 import org.example.backend.dtos.RecipeRequestDto;
 import org.example.backend.dtos.RecipeResponseDto;
 import org.example.backend.exceptions.ResourceNotFoundException;
+import org.example.backend.exceptions.AccessDeniedException;
 import org.example.backend.mappers.IngredientUsageMapper;
 import org.example.backend.mappers.RecipeMapper;
 import org.example.backend.models.Ingredient;
 import org.example.backend.models.IngredientUsage;
 import org.example.backend.models.Recipe;
+import org.example.backend.models.User;
 import org.example.backend.repositories.IngredientRepository;
 import org.example.backend.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class RecipeService {
         this.recipeRepository = recipeRepository;
     }
 
-    public Recipe saveRecipe(RecipeRequestDto recipeRequestDto) {
+    public Recipe saveRecipe(RecipeRequestDto recipeRequestDto, User user) {
         List<IngredientUsage> ingredientUsages = new ArrayList<>();
 
         // Haal het juiste ingredient op met de id
@@ -40,7 +42,7 @@ public class RecipeService {
         }
 
         // Maak een recept aan via de mapper
-        Recipe recipe = RecipeMapper.toEntity(recipeRequestDto, ingredientUsages);
+        Recipe recipe = RecipeMapper.toEntity(recipeRequestDto, ingredientUsages, user);
 
         // Leg de relatie tussen IngredientUsages en Recept
         for (IngredientUsage usage : ingredientUsages) {
@@ -59,8 +61,12 @@ public class RecipeService {
         return recipes.stream().map(RecipeMapper::toDto).toList();
     }
 
-    public Recipe updateRecipe(Long id, RecipeRequestDto dto) {
+    public Recipe updateRecipe(Long id, RecipeRequestDto dto, String userEmail) {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recept met id " + id + " niet gevonden."));
+
+        if (!recipe.getCreatedBy().getEmail().equals(userEmail)) {
+            throw new AccessDeniedException("Je hebt dit recept niet aangemaakt en mag het dus ook niet aanpassen.");
+        }
 
         if (dto.getTitle() != null) {
             recipe.setTitle(dto.getTitle());
@@ -96,14 +102,16 @@ public class RecipeService {
             recipe.setCookingSteps(dto.getCookingSteps());
         }
 
-        return  recipeRepository.save(recipe);
+        return recipeRepository.save(recipe);
     }
 
-    public void deleteRecipeById(Long id) {
-        if (recipeRepository.existsById(id)) {
-            recipeRepository.deleteById(id);
-        } else {
-            throw new ResourceNotFoundException("Recept id niet gevonden");
+    public void deleteRecipeById(Long id, String userEmail) {
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recept id niet gevonden."));
+
+        if (!recipe.getCreatedBy().getEmail().equals(userEmail)) {
+            throw new AccessDeniedException("Je hebt dit recept niet aangemaakt en mag het daarom niet verwijderen");
         }
+
+        recipeRepository.delete(recipe);
     }
 }

@@ -5,11 +5,12 @@ import org.example.backend.dtos.RecipeRequestDto;
 import org.example.backend.dtos.RecipeResponseDto;
 import org.example.backend.models.IngredientUsage;
 import org.example.backend.models.Recipe;
+import org.example.backend.models.User;
 
 import java.util.List;
 
 public class RecipeMapper {
-    public static Recipe toEntity(RecipeRequestDto recipeRequestDto, List<IngredientUsage> ingredientUsages) {
+    public static Recipe toEntity(RecipeRequestDto recipeRequestDto, List<IngredientUsage> ingredientUsages, User user) {
         Recipe recipe = new Recipe();
         recipe.setTitle(recipeRequestDto.getTitle());
         recipe.setDescription(recipeRequestDto.getDescription());
@@ -18,6 +19,7 @@ public class RecipeMapper {
         recipe.setDishType(recipeRequestDto.getDishType());
         recipe.setIngredients(ingredientUsages);
         recipe.setCookingSteps(recipeRequestDto.getCookingSteps());
+        recipe.setCreatedBy(user);
         return recipe;
     }
 
