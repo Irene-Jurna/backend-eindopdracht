@@ -43,5 +43,7 @@ public class Recipe extends BaseModel {
     @JoinColumn(name = "user_id")
     private User createdBy;
 
-    // TODO: nog toevoegen image, createdBy en approved (afhankelijk van User en Image klasses)
+    @OneToOne(mappedBy = "recipe", cascade = CascadeType.ALL)
+    private Image image;
+
 }
