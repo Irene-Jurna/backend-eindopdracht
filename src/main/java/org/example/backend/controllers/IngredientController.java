@@ -7,8 +7,10 @@ import org.example.backend.dtos.IngredientUpdateDto;
 import org.example.backend.enums.IngredientType;
 import org.example.backend.mappers.IngredientMapper;
 import org.example.backend.models.Ingredient;
+import org.example.backend.security.MyUserDetails;
 import org.example.backend.services.IngredientService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +25,9 @@ public class IngredientController {
     }
 
     @PostMapping()
-    public ResponseEntity<IngredientResponseDto> createIngredient(@RequestBody @Valid IngredientRequestDto ingredientRequestDto) {
+    public ResponseEntity<IngredientResponseDto> createIngredient(@RequestBody @Valid IngredientRequestDto ingredientRequestDto, @AuthenticationPrincipal MyUserDetails userDetails) {
+        System.out.println("Gebruiker roles: " + userDetails.getAuthorities());
+
         Ingredient savedIngredient = ingredientService.saveIngredient(ingredientRequestDto);
         IngredientResponseDto ingredientResponseDto = IngredientMapper.toDto(savedIngredient);
         return ResponseEntity.ok(ingredientResponseDto);
@@ -35,14 +39,14 @@ public class IngredientController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<IngredientResponseDto> updateIngredient(@PathVariable Long id, @RequestBody @Valid IngredientUpdateDto ingredientUpdateDto) {
+    public ResponseEntity<IngredientResponseDto> updateIngredient(@PathVariable Long id, @RequestBody @Valid IngredientUpdateDto ingredientUpdateDto, @AuthenticationPrincipal MyUserDetails userDetails) {
         Ingredient ingredientToUpdate = ingredientService.updateIngredient(id, ingredientUpdateDto);
         IngredientResponseDto ingredientResponseDto = IngredientMapper.toDto(ingredientToUpdate);
         return ResponseEntity.ok(ingredientResponseDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<IngredientResponseDto> deleteIngredient(@PathVariable Long id) {
+    public ResponseEntity<IngredientResponseDto> deleteIngredient(@PathVariable Long id, @AuthenticationPrincipal MyUserDetails userDetails) {
         ingredientService.deleteIngredient(id);
         return ResponseEntity.noContent().build();
     }

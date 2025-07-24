@@ -52,7 +52,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/ingredients").permitAll()
-                        .requestMatchers("/ingredients/**").hasRole("FARMER")
+                        .requestMatchers(HttpMethod.POST, "/ingredients").hasRole("FARMER")
+                        .requestMatchers(HttpMethod.PATCH, "/ingredients/**").hasRole("FARMER")
+                        .requestMatchers(HttpMethod.DELETE, "/ingredients/**").hasRole("FARMER")
                         .requestMatchers("/ingredient-usage/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/recipe").hasAnyRole("HARVESTER", "FARMER")
                         .requestMatchers(HttpMethod.DELETE, "/recipe/**").authenticated()
