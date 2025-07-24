@@ -2,6 +2,9 @@ package org.example.backend.controllers;
 
 import org.example.backend.dtos.RecipeRequestDto;
 import org.example.backend.dtos.RecipeResponseDto;
+import org.example.backend.enums.CuisineType;
+import org.example.backend.enums.DishType;
+import org.example.backend.enums.HarvestMonth;
 import org.example.backend.mappers.RecipeMapper;
 import org.example.backend.models.Recipe;
 import org.example.backend.security.MyUserDetails;
@@ -34,8 +37,13 @@ public class RecipeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RecipeResponseDto>> getAllRecipes() {
-        return ResponseEntity.ok(recipeService.getAllRecipes());
+    public ResponseEntity<List<RecipeResponseDto>> getAllRecipes(
+            @RequestParam (required=false) CuisineType cuisineType,
+            @RequestParam (required=false) DishType dishType,
+            @RequestParam (required=false) HarvestMonth harvestMonth,
+            @RequestParam (required=false) List<Long> ingredientIds,
+            @RequestParam (required=false) String season) {
+        return ResponseEntity.ok(recipeService.getAllRecipes(cuisineType, dishType, harvestMonth, ingredientIds, season));
     }
 
     @PatchMapping("/{id}")

@@ -21,6 +21,9 @@ public class Recipe extends BaseModel {
     private String title;
     private String description;
 
+    @ElementCollection
+    private List<String> cookingSteps;
+
     // Enums
     @ElementCollection
     @Enumerated(EnumType.STRING)
@@ -36,14 +39,10 @@ public class Recipe extends BaseModel {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<IngredientUsage> ingredients;
 
-    @ElementCollection
-    private List<String> cookingSteps;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User createdBy;
 
     @OneToOne(mappedBy = "recipe", cascade = CascadeType.ALL)
     private Image image;
-
 }
