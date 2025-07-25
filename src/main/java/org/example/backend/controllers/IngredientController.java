@@ -9,10 +9,12 @@ import org.example.backend.mappers.IngredientMapper;
 import org.example.backend.models.Ingredient;
 import org.example.backend.security.MyUserDetails;
 import org.example.backend.services.IngredientService;
+import org.example.backend.utils.LocationUriHeaderUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,7 +32,9 @@ public class IngredientController {
 
         Ingredient savedIngredient = ingredientService.saveIngredient(ingredientRequestDto);
         IngredientResponseDto ingredientResponseDto = IngredientMapper.toDto(savedIngredient);
-        return ResponseEntity.ok(ingredientResponseDto);
+
+        URI location = LocationUriHeaderUtil.createLocationUri(ingredientResponseDto.getId());
+        return ResponseEntity.created(location).body(ingredientResponseDto);
     }
 
     @GetMapping

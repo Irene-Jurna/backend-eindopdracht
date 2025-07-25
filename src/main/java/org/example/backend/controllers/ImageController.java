@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.example.backend.utils.LocationUriHeaderUtil;
 
 import java.net.URI;
 
@@ -33,11 +34,7 @@ public class ImageController {
 
         ImageResponseDto responseDto = imageService.uploadImage(requestDto);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(responseDto.getId())
-                .toUri();
-
+        URI location = LocationUriHeaderUtil.createLocationUri(responseDto.getId());
         return ResponseEntity.created(location).body(responseDto);
     }
 

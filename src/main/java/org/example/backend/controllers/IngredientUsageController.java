@@ -5,8 +5,11 @@ import org.example.backend.dtos.IngredientUsageResponseDto;
 import org.example.backend.mappers.IngredientUsageMapper;
 import org.example.backend.models.IngredientUsage;
 import org.example.backend.services.IngredientUsageService;
+import org.example.backend.utils.LocationUriHeaderUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/ingredient-usage")
@@ -22,7 +25,9 @@ public class IngredientUsageController {
     public ResponseEntity<IngredientUsageResponseDto> createIngredientUsage(@RequestBody IngredientUsageRequestDto ingredientUsageRequestDto) {
         IngredientUsage savedUsage = ingredientUsageService.saveIngredientUsage(ingredientUsageRequestDto);
         IngredientUsageResponseDto ingredientUsageResponseDto = IngredientUsageMapper.toDto(savedUsage);
-        return ResponseEntity.ok(ingredientUsageResponseDto);
+
+        URI location = LocationUriHeaderUtil.createLocationUri(ingredientUsageResponseDto.getId());
+        return ResponseEntity.created(location).body(ingredientUsageResponseDto);
     }
 
     @GetMapping("/{id}")

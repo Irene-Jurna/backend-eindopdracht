@@ -9,10 +9,12 @@ import org.example.backend.mappers.RecipeMapper;
 import org.example.backend.models.Recipe;
 import org.example.backend.security.MyUserDetails;
 import org.example.backend.services.RecipeService;
+import org.example.backend.utils.LocationUriHeaderUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,7 +30,9 @@ public class RecipeController {
     public ResponseEntity<RecipeResponseDto> createRecipe(@RequestBody RecipeRequestDto recipeRequestDto, @AuthenticationPrincipal MyUserDetails userDetails) {
         Recipe savedRecipe = recipeService.saveRecipe(recipeRequestDto, userDetails.getUser());
         RecipeResponseDto recipeResponseDto = RecipeMapper.toDto(savedRecipe);
-        return ResponseEntity.ok(recipeResponseDto);
+
+        URI location = LocationUriHeaderUtil.createLocationUri(recipeResponseDto.getId());
+        return ResponseEntity.created(location).body(recipeResponseDto);
     }
 
     @GetMapping("/{id}")
