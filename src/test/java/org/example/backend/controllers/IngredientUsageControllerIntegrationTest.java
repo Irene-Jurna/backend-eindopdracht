@@ -1,4 +1,4 @@
-package org.example.backend.services;
+package org.example.backend.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
