@@ -8,7 +8,6 @@ import org.example.backend.enums.DishType;
 import org.example.backend.enums.HarvestMonth;
 import org.example.backend.exceptions.AccessDeniedException;
 import org.example.backend.exceptions.ResourceNotFoundException;
-import org.example.backend.mappers.RecipeMapper;
 import org.example.backend.models.*;
 import org.example.backend.repositories.IngredientRepository;
 import org.example.backend.repositories.RecipeRepository;
